@@ -49,3 +49,15 @@ button {
     margin: 15px auto;
     padding: 0px 10px;
 }
+
+#directions {
+    position: relative;
+    height: auto; /* will grow as needed */
+    width: 90%;
+    margin: 15px auto;
+    padding: 10px;
+}
+
+.center {
+    text-align: center;
+}
