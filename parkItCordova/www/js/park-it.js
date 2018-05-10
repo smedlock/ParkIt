@@ -1,5 +1,7 @@
 var storage;
 
+$(init);
+
 function init() {
 
     //Third parameter has to do with event bubbling and
@@ -15,14 +17,14 @@ function onDeviceReady() {
     node.setAttribute('type', 'text/css');
 
     if (cordova.platformid == 'ios') {
-        node.setAttribute('href', 'styles/park-it-ios.css');
+        node.setAttribute('href', 'css/park-it-ios.css');
 
         //prevent status bar from overlaying web view
         window.StatusBar.overlaysWebView(false);
         window.StatusBar.styleDefault();
     } else {
         //Default code
-        node.setAttribute('href', 'styles/park-it-android.css');
+        node.setAttribute('href', 'css/park-it-android.css');
         window.StatusBar.backgroundColorByHexString("#1565C0");
     }
 
@@ -43,7 +45,7 @@ function initMap() {
 }
 
 $("#park").click(function() {
-    alert('Set parking location');
+    setParkingLocation();
 });
 
 $("#retrieve").click(function() {
@@ -52,4 +54,42 @@ $("#retrieve").click(function() {
 
 $("#gotIt").click(function() {
     $("#instructions").hide();
-})
+});
+
+function setParkingLocation() {
+    navigator.geolocation.getCurrentPosition(
+        setParkingLocationSuccess,
+        setParkingLocationError,
+        { enableHighAccuracy:true }
+        );
+}
+
+function setParkingLocationSuccess(position) {
+
+    latitude = position.coords.latitude;
+    storage.setItem("parkedLatitude", latitude);
+
+    longitude = position.coords.longitude;
+    storage.setItem("parkedLongitude", longitude);
+
+    //Add statements to store the longitude
+
+    //Display an alert that shows the latitude and longitude
+    //Use navigator.notifications.alert(msg)
+
+
+    showParkingLocation();
+}
+
+function setParkingLocationError(error) {
+    navigator.notification.alert("Error Code: " + error.code
+    + "\nErorr Message: " + error.message);
+}
+
+function showParkingLocation() {
+    navigator.notification.alert("You are parked at Lat: "
+    + storage.getItem("parkedLatitude")
+    + ", Long: " + storage.getItem("parkedLongitude"));
+
+    //hide directions and instructions
+}
